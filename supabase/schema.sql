@@ -180,8 +180,8 @@ language plpgsql
 set search_path = public
 as $$
 begin
-  delete from public.requests;
-  delete from public.songs;
+  delete from public.requests where id is not null;
+  delete from public.songs where id is not null;
 
   insert into public.settings (key, value)
   select key, value
