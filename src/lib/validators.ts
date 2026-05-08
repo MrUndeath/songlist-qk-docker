@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { requestDecisionOptions, songLanguageOptions, songStatusOptions } from '$lib/types';
 
 const maxTagCount = 8;
+const maxArtistNameLength = 300;
+const artistNameMaxMessage = `原唱名称请控制在 ${maxArtistNameLength} 字以内。`;
 
 const csvToTags = (value: string) =>
   value
@@ -19,7 +21,7 @@ const tagsInputSchema = z
 
 export const requestSchema = z.object({
   songTitle: z.string().trim().min(1, '请填写歌曲名。').max(120, '歌曲名过长。'),
-  artist: z.string().trim().max(120, '原唱名称过长。'),
+  artist: z.string().trim().max(maxArtistNameLength, artistNameMaxMessage),
   language: z.enum(songLanguageOptions, {
     error: '请选择有效语言。'
   }),
@@ -39,7 +41,7 @@ export const songSchema = z
       .optional()
       .transform((value) => value || undefined),
     title: z.string().trim().min(1, '请填写歌名。').max(120, '歌名过长。'),
-    artist: z.string().trim().min(1, '请填写原唱。').max(120, '原唱名称过长。'),
+    artist: z.string().trim().min(1, '请填写原唱。').max(maxArtistNameLength, artistNameMaxMessage),
     language: z.enum(songLanguageOptions, {
       error: '请选择有效语言。'
     }),
@@ -63,7 +65,7 @@ export const playlistImportSettingsSchema = z.object({
 export const playlistSongImportSchema = z
   .object({
     title: z.string().trim().min(1, '歌名缺失。').max(120, '歌名过长。'),
-    artist: z.string().trim().min(1, '原唱缺失。').max(120, '原唱名称过长。'),
+    artist: z.string().trim().min(1, '原唱缺失。').max(maxArtistNameLength, artistNameMaxMessage),
     language: z.enum(songLanguageOptions, {
       error: '请选择有效语言。'
     }),
