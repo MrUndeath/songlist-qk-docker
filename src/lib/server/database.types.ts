@@ -31,34 +31,34 @@ export type Database = {
           artist: string;
           created_at: string;
           id: string;
-          language: string;
+          language: Database['public']['Enums']['song_language'];
           matched_song_id: string | null;
           message: string;
           requester_name: string | null;
           song_title: string;
-          status: string;
+          status: Database['public']['Enums']['request_status'];
         };
         Insert: {
           artist?: string;
           created_at?: string;
           id?: string;
-          language: string;
+          language: Database['public']['Enums']['song_language'];
           matched_song_id?: string | null;
           message: string;
           requester_name?: string | null;
           song_title: string;
-          status?: string;
+          status?: Database['public']['Enums']['request_status'];
         };
         Update: {
           artist?: string;
           created_at?: string;
           id?: string;
-          language?: string;
+          language?: Database['public']['Enums']['song_language'];
           matched_song_id?: string | null;
           message?: string;
           requester_name?: string | null;
           song_title?: string;
-          status?: string;
+          status?: Database['public']['Enums']['request_status'];
         };
         Relationships: [
           {
@@ -91,8 +91,8 @@ export type Database = {
           created_at: string;
           id: string;
           is_public: boolean;
-          language: string;
-          status: string;
+          language: Database['public']['Enums']['song_language'];
+          status: Database['public']['Enums']['song_status'];
           tags: string[];
           title: string;
         };
@@ -101,8 +101,8 @@ export type Database = {
           created_at?: string;
           id?: string;
           is_public?: boolean;
-          language: string;
-          status: string;
+          language: Database['public']['Enums']['song_language'];
+          status: Database['public']['Enums']['song_status'];
           tags?: string[];
           title: string;
         };
@@ -111,8 +111,8 @@ export type Database = {
           created_at?: string;
           id?: string;
           is_public?: boolean;
-          language?: string;
-          status?: string;
+          language?: Database['public']['Enums']['song_language'];
+          status?: Database['public']['Enums']['song_status'];
           tags?: string[];
           title?: string;
         };
@@ -135,7 +135,7 @@ export type Database = {
       create_song_request: {
         Args: {
           p_artist: string;
-          p_language: string;
+          p_language: Database['public']['Enums']['song_language'];
           p_message: string;
           p_requester_name: string;
           p_song_title: string;
@@ -145,7 +145,9 @@ export type Database = {
       reset_admin_data: { Args: { p_settings: Json }; Returns: undefined };
     };
     Enums: {
-      [_ in never]: never;
+      request_status: 'pending' | 'accepted' | 'refused';
+      song_language: '中文' | '英语' | '日语' | '其他';
+      song_status: 'ready' | 'learning' | 'resting';
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -264,6 +266,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {}
+    Enums: {
+      request_status: ['pending', 'accepted', 'refused'],
+      song_language: ['中文', '英语', '日语', '其他'],
+      song_status: ['ready', 'learning', 'resting']
+    }
   }
 } as const;

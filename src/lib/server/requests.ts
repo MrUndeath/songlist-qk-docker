@@ -1,5 +1,6 @@
 import type { Database } from '$lib/server/database.types';
 import { UserFacingError } from '$lib/server/errors';
+import { fetchSupabasePages } from '$lib/server/pagination';
 import { supabaseAdmin } from '$lib/server/supabase';
 import { type RequestDecision, type RequestStatus, type SongLanguage, type SongRequest } from '$lib/types';
 
@@ -20,25 +21,25 @@ const mapRequestRow = (row: RequestRow): SongRequest => ({
   id: row.id,
   songTitle: row.song_title,
   artist: row.artist,
-  language: row.language as SongLanguage,
+  language: row.language,
   message: row.message,
   requesterName: row.requester_name,
-  status: row.status as RequestStatus,
+  status: row.status,
   matchedSongId: row.matched_song_id,
   createdAt: row.created_at
 });
 
 export const listRequests = async (): Promise<SongRequest[]> => {
-  const { data, error } = await supabaseAdmin
-    .from('requests')
-    .select('id, song_title, artist, language, message, requester_name, status, matched_song_id, created_at')
-    .order('created_at', { ascending: false });
+  const rows = await fetchSupabasePages<RequestRow>((from, to) =>
+    supabaseAdmin
+      .from('requests')
+      .select('id, song_title, artist, language, message, requester_name, status, matched_song_id, created_at')
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: false })
+      .range(from, to)
+  );
 
-  if (error) {
-    throw error;
-  }
-
-  return (data as RequestRow[]).map(mapRequestRow);
+  return rows.map(mapRequestRow);
 };
 
 export const createSongRequest = async ({

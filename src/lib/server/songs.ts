@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import type { Database } from '$lib/server/database.types';
+import { fetchSupabasePages } from '$lib/server/pagination';
 import { supabaseAdmin, supabasePublic } from '$lib/server/supabase';
 import { type Song, type SongLanguage, type SongStatus } from '$lib/types';
 
@@ -10,45 +11,32 @@ type SongRow = Pick<
 >;
 
 const sortStrings = (values: Iterable<string>) => Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
-const songFetchPageSize = 1000;
 
 const mapSongRow = (row: SongRow): Song => ({
   id: row.id,
   title: row.title,
   artist: row.artist,
-  language: row.language as SongLanguage,
-  status: row.status as SongStatus,
+  language: row.language,
+  status: row.status,
   tags: row.tags,
   isPublic: row.is_public
 });
 
 const fetchSongs = async (supabase: SupabaseClient<Database>, isPublic?: boolean): Promise<Song[]> => {
-  const rows: SongRow[] = [];
-
-  for (let from = 0; ; from += songFetchPageSize) {
+  const rows = await fetchSupabasePages<SongRow>((from, to) => {
     let query = supabase
       .from('songs')
       .select('id, title, artist, language, status, tags, is_public')
       .order('title', { ascending: true })
       .order('id', { ascending: true })
-      .range(from, from + songFetchPageSize - 1);
+      .range(from, to);
 
     if (isPublic !== undefined) {
       query = query.eq('is_public', isPublic);
     }
 
-    const { data, error } = await query;
-
-    if (error) {
-      throw error;
-    }
-
-    rows.push(...(data as SongRow[]));
-
-    if (data.length < songFetchPageSize) {
-      break;
-    }
-  }
+    return query;
+  });
 
   return rows.map(mapSongRow);
 };
