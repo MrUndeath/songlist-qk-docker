@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-  <title>管理员登录 | QingKong Songlist</title>
+  <title>管理员登录 | 弥涅Mene Songlist</title>
 </svelte:head>
 
 <div class="flex min-h-[70vh] items-center justify-center">

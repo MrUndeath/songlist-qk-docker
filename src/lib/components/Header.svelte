@@ -29,8 +29,8 @@
         歌
       </span>
       <span class="flex min-w-0 flex-col leading-tight">
-        <span class="text-sm font-semibold text-[var(--color-text)]">QingKong Songlist</span>
-        <span class="text-[11px] text-[var(--color-text-muted)]">单主播歌单与愿望单管理</span>
+        <span class="text-sm font-semibold text-[var(--color-text)]">弥涅Mene Songlist</span>
+        <span class="text-[11px] text-[var(--color-text-muted)]">弥涅Mene歌单与愿望单管理</span>
       </span>
     </a>
 

@@ -55,7 +55,7 @@
 </script>
 
 <svelte:head>
-  <title>后台管理 | QingKong Songlist</title>
+  <title>后台管理 | 弥涅Mene Songlist</title>
 </svelte:head>
 
 <div class="space-y-6">

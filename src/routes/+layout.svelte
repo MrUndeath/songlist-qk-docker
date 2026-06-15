@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-  <title>QingKong Songlist</title>
+  <title>弥涅Mene Songlist</title>
   <meta name="description" content="单主播 VTuber 歌单站，支持公开歌单展示、搜索筛选、愿望单提交与后台管理。" />
 </svelte:head>
 
@@ -34,7 +34,7 @@
   <footer class="site-footer">
     <div class="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-6 lg:px-6">
       <p class="text-xs text-[var(--color-text-muted)]">
-        © {currentYear} QingKong Songlist
+        © {currentYear} 弥涅Mene Songlist
       </p>
       <p class="text-xs text-[var(--color-text-muted)]">由 SvelteKit 驱动</p>
     </div>
