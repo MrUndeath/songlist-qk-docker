@@ -58,6 +58,34 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 
 ### Docker（推荐）
 
+使用预构建镜像：
+
+```bash
+docker run -p 3000:3000 \
+  -e PUBLIC_SUPABASE_URL=https://xxx.supabase.co \
+  -e PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxx \
+  -e SUPABASE_SECRET_KEY=sb_secret_xxx \
+  -e AUTH_SECRET=your-random-secret \
+  ghcr.io/xonline-tech/songlist-qk-docker:latest
+```
+
+或使用 Docker Compose：
+
+```yaml
+services:
+  songlist:
+    image: ghcr.io/xonline-tech/songlist-qk-docker:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+      - PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxx
+      - SUPABASE_SECRET_KEY=sb_secret_xxx
+      - AUTH_SECRET=your-random-secret
+```
+
+### 自行构建镜像
+
 项目自带多阶段 Dockerfile，构建时无需提供环境变量：
 
 ```bash
